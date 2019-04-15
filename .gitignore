@@ -1,0 +1,14 @@
+
+*.aux
+
+*.log
+
+*.out
+
+*.pdf
+
+*.gz
+
+*.toc
+
+\.idea/
