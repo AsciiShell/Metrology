@@ -12,3 +12,5 @@
 *.toc
 
 \.idea/
+
+\.ipynb_checkpoints/
