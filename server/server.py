@@ -15,7 +15,7 @@ class Root(object):
 
 if __name__ == '__main__':
     cherrypy.config.update({
-        'server.socket_port': 8081,
+        'server.socket_port': 8080,
         'tools.proxy.on': True,
     })
     cherrypy.quickstart(Root())
