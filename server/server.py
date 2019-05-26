@@ -4,7 +4,8 @@ import cherrypy
 class Root(object):
     @cherrypy.expose
     def index(self):
-        return "Hello World!"
+        with open("index.html", 'r', encoding='utf8') as f:
+            return f.read()
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
