@@ -22,21 +22,44 @@
             let reader = new FileReader();
             reader.onloadend = function (evt) {
 
-                if (evt.target.readyState === FileReader.DONE) { // DONE == 2
-                    $("#data_text").val(evt.target.result);
+                if (evt.target["readyState"] === FileReader.DONE) { // DONE == 2
+                    $("#data_text").val(evt.target["result"].split(",").join("."));
                 }
             };
             let blob = files[0].slice(0, files[0].size);
             reader.readAsBinaryString(blob);
 
         });
+        $("#auto_n").on('change', function (e) {
+            $("#manual_n")[0].disabled = this.checked;
+        });
         $('#control').submit(function (e) {
             e.preventDefault();
+            let data = $("#data_text").val();
+            let auto_n = $("#auto_n")[0].checked;
+            let manual_n = parseInt($("#manual_n").val()) || (auto_n ? 0 : 1);
+
+            $.ajax({
+                type: 'POST',
+                url: '/calc',
+                data: JSON.stringify({"data": data, "auto_n": auto_n, "manual_n": manual_n}),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    let s = JSON.stringify(data, null, 4);
+                    $("#result_row").text(s);
+                    console.log(s);
+                },
+                error: function (jqXHR, exception) {
+                    console.log(exception);
+                }
+
+            });
         });
     });
 
 </script>
-<div>
+<div class="container-fluid">
     <h1>Проверка выборки по критерию Шарлье</h1>
     <form id="control">
         <div class="form-group">
@@ -47,9 +70,24 @@
             <label for="data_text"> Или введите его вручную</label>
             <textarea class="form-control" id="data_text" rows="10"></textarea>
         </div>
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="auto_n" name="auto_n" checked>
+                    <label class="form-check-label" for="auto_n">Автоматическая нумерация</label>
+                </div>
+            </div>
+            <div class="form-group row col-md-9">
+                <label class="col-sm-2 col-form-label" for="manual_n">Размер выборки</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="manual_n" name="manual_n" placeholder="Размер выборки" min="1" step="1" disabled>
+                </div>
+            </div>
+        </div>
+
         <button type="submit" class="btn btn-primary">Послать куда подальше</button>
     </form>
-
+    <pre><code id="result_row"></code></pre>
 </div>
 </body>
 </html>
