@@ -11,7 +11,7 @@ class Root(object):
     @cherrypy.tools.json_out()
     @cherrypy.tools.json_in()
     def calc(self):
-        return {"text": "here you should return metrics"}
+        return cherrypy.request.json
 
 
 if __name__ == '__main__':
