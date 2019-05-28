@@ -46,11 +46,28 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
                 success: function (data) {
-                    let s = JSON.stringify(data, null, 4);
-                    $("#result_row").text(s);
-                    console.log(s);
+                    let target = $("#result").empty();
+                    for (let i = 0; i < data.length; i++) {
+                        target.append(`<div class="row">
+    <p>Шаг ${i + 1}</p>
+</div>
+<div class="row">
+    <img src="data:image/png;base64, ${data[i]["plot"]}" alt="Plot"/>
+</div>
+<div class="row">
+    <p>Хорошие значения: ${data[i]["ok"].join(" ")}</p>
+</div>
+<div class="row">
+    <p>Плохие зачения: ${data[i]["bad"].join(" ")}</p>
+</div>
+<div class="row">
+    <p>Среднее: ${data[i]["mean"]}, СКО: ${data[i]["sko"]}, Значение критерия Шарлье: ${data[i]["sharlie"]}</p>
+</div>`);
+                    }
+
                 },
                 error: function (jqXHR, exception) {
+                    alert("Ошибка обработки, см. в консоль");
                     console.log(exception);
                 }
 
@@ -87,7 +104,9 @@
 
         <button type="submit" class="btn btn-primary">Послать куда подальше</button>
     </form>
-    <pre><code id="result_row"></code></pre>
+    <div id="result" class="container">
+
+    </div>
 </div>
 </body>
 </html>
