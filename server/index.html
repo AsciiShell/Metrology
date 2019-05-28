@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Бульбулятор</title>
+    <title>Проверка выборки по критерию Шарлье</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,13 +36,10 @@
         $('#control').submit(function (e) {
             e.preventDefault();
             let data = $("#data_text").val();
-            let auto_n = $("#auto_n")[0].checked;
-            let manual_n = parseInt($("#manual_n").val()) || (auto_n ? 0 : 1);
-
             $.ajax({
                 type: 'POST',
                 url: '/calc',
-                data: JSON.stringify({"data": data, "auto_n": auto_n, "manual_n": manual_n}),
+                data: JSON.stringify({"data": data}),
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
                 success: function (data) {
@@ -87,22 +84,7 @@
             <label for="data_text"> Или введите его вручную</label>
             <textarea class="form-control" id="data_text" rows="10"></textarea>
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-3">
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="auto_n" name="auto_n" checked>
-                    <label class="form-check-label" for="auto_n">Автоматическая нумерация</label>
-                </div>
-            </div>
-            <div class="form-group row col-md-9">
-                <label class="col-sm-2 col-form-label" for="manual_n">Размер выборки</label>
-                <div class="col-sm-10">
-                    <input type="number" class="form-control" id="manual_n" name="manual_n" placeholder="Размер выборки" min="1" step="1" disabled>
-                </div>
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Послать куда подальше</button>
+        <button type="submit" class="btn btn-primary">Вычислить</button>
     </form>
     <div id="result" class="container">
 
