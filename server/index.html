@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Проверка выборки по критерию Шарлье</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</head>
+<body>
+<script type="text/javascript">
+    $(function () {
+        $('#files').on('change', function (evt) {
+            let files = document.getElementById('files').files;
+            if (!files.length) {
+                alert('Please select a file!');
+                return;
+            }
+            let reader = new FileReader();
+            reader.onloadend = function (evt) {
+
+                if (evt.target["readyState"] === FileReader.DONE) { // DONE == 2
+                    $("#data_text").val(evt.target["result"].split(",").join("."));
+                }
+            };
+            let blob = files[0].slice(0, files[0].size);
+            reader.readAsBinaryString(blob);
+
+        });
+        $("#auto_n").on('change', function (e) {
+            $("#manual_n")[0].disabled = this.checked;
+        });
+        $('#control').submit(function (e) {
+            e.preventDefault();
+            let data = $("#data_text").val();
+            $.ajax({
+                type: 'POST',
+                url: '/calc',
+                data: JSON.stringify({"data": data}),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    let target = $("#result").empty();
+                    for (let i = 0; i < data.length; i++) {
+                        target.append(`<div class="row">
+    <p>Шаг ${i + 1}</p>
+</div>
+<div class="row">
+    <img src="data:image/png;base64, ${data[i]["plot"]}" alt="Plot"/>
+</div>
+<div class="row">
+    <p>Хорошие значения: ${data[i]["ok"].join(" ")}</p>
+</div>
+<div class="row">
+    <p>Плохие зачения: ${data[i]["bad"].join(" ")}</p>
+</div>
+<div class="row">
+    <p>Среднее: ${data[i]["mean"]}, СКО: ${data[i]["sko"]}, Значение критерия Шарлье: ${data[i]["sharlie"]}</p>
+</div>`);
+                    }
+
+                },
+                error: function (jqXHR, exception) {
+                    alert("Ошибка обработки, см. в консоль");
+                    console.log(exception);
+                }
+
+            });
+        });
+    });
+
+</script>
+<div class="container-fluid">
+    <h1>Проверка выборки по критерию Шарлье</h1>
+    <form id="control">
+        <div class="form-group">
+            <label for="files">Выберите файл датасета </label>
+            <input type="file" id="files" name="file" class="form-control-file">
+        </div>
+        <div class="form-group">
+            <label for="data_text"> Или введите его вручную</label>
+            <textarea class="form-control" id="data_text" rows="10"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Вычислить</button>
+    </form>
+    <div id="result" class="container">
+
+    </div>
+</div>
+</body>
+</html>
