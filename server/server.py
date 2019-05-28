@@ -1,5 +1,6 @@
 import base64
 import io
+import os
 
 import cherrypy
 import matplotlib.pyplot as plt
@@ -72,11 +73,20 @@ def calc(x):
     return history
 
 
+def get_page():
+    with open("index.html", 'r', encoding='utf8') as f:
+        return f.read()
+
+
+page = None
+if os.environ.get('DEVELOPMENT') is None:
+    page = get_page()
+
+
 class Root(object):
     @cherrypy.expose
     def index(self):
-        with open("index.html", 'r', encoding='utf8') as f:
-            return f.read()
+        return get_page() if page is None else page
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
