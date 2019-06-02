@@ -87,12 +87,61 @@
 	
 \textbf{Работа алгоритма}
 	
+	Работа алгоритма начинается с загрузки данных, данные можно загрузить из файла, для этого нужно нажать по кнопке <<Выберете файл>> (рис. \ref{fig:screenshot001}) и выбрать необходимый файл.
+	После этого загруженные данные отобразятся в окне ввода данных (рис. \ref{fig:screenshot002}).
+	Интерфейс также поддерживает ручной ввод данных, для этого их следует вводить в окно ввода данных (\ref{fig:screenshot002}).
 	
-
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\linewidth]{images/screenshot001}
+		\caption{Кнопка <<Выберете файл>>}
+		\label{fig:screenshot001}
+	\end{figure}
+	
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7\linewidth]{images/screenshot002}
+		\caption{Окно ввода данных}
+		\label{fig:screenshot002}
+	\end{figure}
+	
+	Для того, чтобы отправить  данные на сервер и начать работу алгоритма, нужно нажать кнопку <<Вычислить>> (рис. \ref{fig:screenshot003}).
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.2\linewidth]{images/screenshot003}
+		\caption{Кнопка <<Вычислить>>}
+		\label{fig:screenshot003}
+	\end{figure}
 
 \section{Результаты обработки данных}
 
+	После обработки данных на экран пошагово выводится подробная информация о результатах промежуточных и окочательных расчетов.
+	
+	На рисунке \ref{fig:screenshot004} приведены результаты промежуточных расчетов.
+	На нем можно выделить график, на котором отображены значения выборки (синим -- допустимые значения, оранжевым -- выбросы).
+	Далее выводятся хорошие значения, а после них выбросы.
+	В последней строчке находится справочная информация о выборке, Среднее значение, СКО и значение критерия Шарлье. 
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.95\linewidth]{images/screenshot004}
+		\caption{Промежуточный результат обработки выборки}
+		\label{fig:screenshot004}
+	\end{figure}
 
+	Подобная информация выводится для каждого шага.	
+	Итоговый результат выглядит аналогичным образом (рис. \ref{fig:screenshot005}), разница заключается лишь в том, что на этом шаге нет выбросов.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.85\linewidth]{images/screenshot005}
+		\caption{}
+		\label{fig:screenshot005}
+	\end{figure}
+	
+	
 
 \section{Библиографический список}
 
