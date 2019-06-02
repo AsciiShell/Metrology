@@ -22,7 +22,7 @@
 
 Методика обработки выборки на наличие выбросов по критерию Шарлье.
 \begin{itemize}
-	\item Определение критерия Шарлье. Если сомнительным в ряду наблюдений является один результат, то
+	\item Определение критерия Шарлье \cite{krSh}. Если сомнительным в ряду наблюдений является один результат, то
 	
 	$$n[1 - \text{Ф}(K_{\text{Ш}})] = 1$$
 	
@@ -40,7 +40,7 @@
 	
 	$$\overline{X} = \sqrt{\dfrac{1}{n-1}\sum_{i=1}^{n}(x_i - (\overline X))^2}$$
 	
-	\item Сравниваются значения
+	\item Сравниваются значения \cite{zalaznih}
 	
 	$$|x_{\text{сомнит}} - (\overline X)| \text{ ? } s(x)K_{\text{Ш}}$$
 	
@@ -132,18 +132,29 @@
 	\end{figure}
 
 	Подобная информация выводится для каждого шага.	
+	
 	Итоговый результат выглядит аналогичным образом (рис. \ref{fig:screenshot005}), разница заключается лишь в том, что на этом шаге нет выбросов.
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.85\linewidth]{images/screenshot005}
-		\caption{}
+		\includegraphics[width=0.95\linewidth]{images/screenshot005}
+		\caption{Итоговый результат обработки выборки}
 		\label{fig:screenshot005}
 	\end{figure}
 	
 	
 
-\section{Библиографический список}
+%\section{Библиографический список}
+
+\newpage 
+\renewcommand{\refname}{{\normalsize БИБЛИОГРАФИЧЕСКИЙ СПИСОК}} 
+\centering 
+\begin{thebibliography}{9} 
+	\addcontentsline{toc}{section}{\refname} 
+	\bibitem{zalaznih} Критерий Шарлье В.В. Заляжных, URL: \url{https://arhiuch.ru/st2.html} (дата обращения 02.06.2019)
+	\bibitem{krSh} Критерий Шарлье, URL: \url{https://studme.org/19080611/tovarovedenie/kriteriy_sharle} (дата обращения 02.06.2019)
+	
+\end{thebibliography}
 
 \section{Заключение}
 
