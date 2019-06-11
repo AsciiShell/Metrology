@@ -1,10 +1,10 @@
 import base64
-import io
-import os
-
 import cherrypy
+import io
 import matplotlib.pyplot as plt
 import numpy as np
+import os
+import re
 from scipy import special
 
 
@@ -42,7 +42,7 @@ def find_bad(x):
 
 def plt_to_base64(x, ok, bad, size=5):
     """draw plot graph"""
-    border = borders(ok)
+    border = borders(ok) if len(ok) > 0 else None
     iterator_ok = np.arange(len(x))[np.isin(x, ok)]
     iterator_bad = np.arange(len(x))[np.isin(x, bad)]
     plt.figure(figsize=(size, size))
@@ -50,7 +50,8 @@ def plt_to_base64(x, ok, bad, size=5):
     plt.title("Обработка выборки")
     plt.xlabel("#")
     plt.ylabel("Значение")
-    plt.hlines(border, 0, len(x) - 1, color="r", linestyles="dashed")
+    if border is not None:
+        plt.hlines(border, 0, len(x) - 1, color="r", linestyles="dashed")
     plt.scatter(iterator_ok, ok, label="Хорошие значения")
     plt.scatter(iterator_bad, bad, label="Промахи")
     plt.legend()
@@ -65,7 +66,7 @@ def calc(x):
     x = np.array(x)
     bad = [0]  # do-while loop
     ok = x.copy()
-    while len(bad) != 0:
+    while len(bad) != 0 and len(ok) > 1:
         mean, sko = statistics(ok)
         sh = sharlie(len(ok))
         ok, bad = find_bad(ok)
@@ -92,7 +93,7 @@ class Root(object):
     @cherrypy.tools.json_out()
     @cherrypy.tools.json_in()
     def calc(self):
-        data = list(map(float, cherrypy.request.json["data"].splitlines()))
+        data = list(map(float, " ".join(re.findall('[0-9.]*', cherrypy.request.json["data"].replace(",", "."))).split()))
         return calc(data)
 
 
